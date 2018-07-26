@@ -402,6 +402,9 @@ class ViewsRefresher:
                 self.dlg.findChild(QComboBox, "comboBox_love").setEnabled(True)
                 self.dlg.findChild(QComboBox, "comboBox_zdep").setEnabled(True)
                 self.dlg.findChild(QComboBox, "comboBox_adresse").setEnabled(True)
+                self.dlg.findChild(QComboBox, "comboBox_suf").setEnabled(True)
+                self.dlg.findChild(QComboBox, "comboBox_cond_chem").setEnabled(True)
+                self.dlg.findChild(QComboBox, "comboBox_cab_cond").setEnabled(True)
 
 
 
@@ -432,6 +435,9 @@ class ViewsRefresher:
                 self.remplir_menu_deroulant_reference(self.dlg.comboBox_love, ("SELECT oid::regclass::text FROM pg_class WHERE  relkind = 'm';"), 'prod.vs_controles_love')
                 self.remplir_menu_deroulant_reference(self.dlg.comboBox_zdep, ("SELECT oid::regclass::text FROM pg_class WHERE  relkind = 'm';"), 'prod.vs_controles_zdep')
                 self.remplir_menu_deroulant_reference(self.dlg.comboBox_adresse, ("SELECT oid::regclass::text FROM pg_class WHERE  relkind = 'm';"), 'prod.vs_controles_adresse')
+                self.remplir_menu_deroulant_reference(self.dlg.comboBox_suf, ("SELECT oid::regclass::text FROM pg_class WHERE  relkind = 'm';"), 'prod.vs_controles_suf')
+                self.remplir_menu_deroulant_reference(self.dlg.comboBox_cond_chem, ("SELECT oid::regclass::text FROM pg_class WHERE  relkind = 'm';"), 'prod.vs_controles_cond_chem')
+                self.remplir_menu_deroulant_reference(self.dlg.comboBox_cab_cond, ("SELECT oid::regclass::text FROM pg_class WHERE  relkind = 'm';"), 'prod.vs_controles_cab_cond')
             
 
 
@@ -511,12 +517,16 @@ class ViewsRefresher:
             cable = self.dlg.comboBox_cable.currentText()
             love = self.dlg.comboBox_love.currentText()
             zdep = self.dlg.comboBox_zdep.currentText()
+            suf = self.dlg.comboBox_suf.currentText()
+            cond_chem = self.dlg.comboBox_cond_chem.currentText()
+            cab_cond = self.dlg.comboBox_cab_cond.currentText()
 
-            views_list = [adductabilite, noeud, adresse, sitetech, baie, ptech, cheminement, conduite, cable, love, ebp, zpbo, zdep]
+
+            views_list = [adductabilite, noeud, suf, adresse, sitetech, baie, ptech, cheminement, conduite, cond_chem, cable, cab_cond, love, ebp, zpbo, zdep]
 
 
             self.fenetreMessage(QMessageBox, "info", "within refresh_views")
-            query_test = ""
+            query = ""
 
         except Exception as e:
             self.fenetreMessage(QMessageBox.Warning, "error", str(e))
@@ -529,7 +539,7 @@ class ViewsRefresher:
                 self.add_pg_layer("prod", view.split(".")[1])
                 layer = QgsMapLayerRegistry.instance().mapLayersByName(view.split(".")[1])[0]
                 # exclude non-spatial tables
-                if view not in (baie, love):
+                if view not in (baie, love, suf, cond_chem, cab_cond):
                     self.add_style(layer)
 
         except Exception as e:
@@ -540,9 +550,6 @@ class ViewsRefresher:
         
         self.fenetreMessage(QMessageBox, "Success", "The query is executed")
         self.fenetreMessage(QMessageBox, "Success", query)
-
-        # layer = QgsMapLayerRegistry.instance().mapLayersByName("vs_controles_cable")[0]
-        # self.add_style(layer)
 
 
 
