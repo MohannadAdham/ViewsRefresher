@@ -99,8 +99,11 @@ class ViewsRefresher:
         self.dlg.lineEdit_Password.setEchoMode(QLineEdit.Password)
 
         # # Connect the button "pushButton_verifier_topologie"
-        # Button_verifier_topologie = self.dlg.findChild(QPushButton, "pushButton_verifier_topologie")
-        # QObject.connect(Button_verifier_topologie, SIGNAL("clicked()"), self.verify_topology)
+        Button_mettre_a_jour_cable = self.dlg.findChild(QPushButton, "pushButton_mettre_a_jour_cable")
+        QObject.connect(Button_mettre_a_jour_cable, SIGNAL("clicked()"), self.refresh_views)
+
+
+
         # # Connect the button "pushButton_orientation"
         # Button_orientation = self.dlg.findChild(QPushButton, "pushButton_orientation")
         # QObject.connect(Button_orientation, SIGNAL("clicked()"), self.calcul_orientation)
@@ -488,4 +491,99 @@ class ViewsRefresher:
             self.fenetreMessage(QMessageBox, "Success", "Layer %s is loaded" % vlayer.name())
 
         else :
-            self.fenetreMessage(QMessageBox, "Success", "Layer %s already exists but it has been updated" % vlayer.name())
+            # self.fenetreMessage(QMessageBox, "Success", "Layer %s already exists but it has been updated" % vlayer.name())
+            pass
+
+
+
+    def refresh_views(self):
+        try:
+            noeud = self.dlg.comboBox_noeud.currentText()
+            adductabilite = self.dlg.comboBox_adductabilite.currentText()
+            adresse = self.dlg.comboBox_adresse.currentText()
+            sitetech = self.dlg.comboBox_sitetech.currentText()
+            baie = self.dlg.comboBox_baie.currentText()
+            ptech = self.dlg.comboBox_ptech.currentText()
+            cheminement = self.dlg.comboBox_cheminement.currentText()
+            conduite = self.dlg.comboBox_conduite.currentText()
+            ebp = self.dlg.comboBox_ebp.currentText()
+            zpbo = self.dlg.comboBox_zpbo.currentText()
+            cable = self.dlg.comboBox_cable.currentText()
+            love = self.dlg.comboBox_love.currentText()
+            zdep = self.dlg.comboBox_zdep.currentText()
+
+            views_list = [adductabilite, noeud, adresse, sitetech, baie, ptech, cheminement, conduite, cable, love, ebp, zpbo, zdep]
+
+
+            self.fenetreMessage(QMessageBox, "info", "within refresh_views")
+            query_test = ""
+
+        except Exception as e:
+            self.fenetreMessage(QMessageBox.Warning, "error", str(e))
+
+
+        try:
+            for view in views_list:
+                query += "REFRESH MATERIALIZED VIEW " + view + "; \n"
+                self.fenetreMessage(QMessageBox, "info", view.split(".")[1])
+                self.add_pg_layer("prod", view.split(".")[1])
+                layer = QgsMapLayerRegistry.instance().mapLayersByName(view.split(".")[1])[0]
+                # exclude non-spatial tables
+                if view not in (baie, love):
+                    self.add_style(layer)
+
+        except Exception as e:
+            self.fenetreMessage(QMessageBox.Warning, "error", str(e))
+
+
+        # self.executerRequette(query, False)
+        
+        self.fenetreMessage(QMessageBox, "Success", "The query is executed")
+        self.fenetreMessage(QMessageBox, "Success", query)
+
+        # layer = QgsMapLayerRegistry.instance().mapLayersByName("vs_controles_cable")[0]
+        # self.add_style(layer)
+
+
+
+
+    def add_style(self, layer):
+        from random import randrange
+
+        # Get the active layer (must be a vector layer)
+        # layer = qgis.utils.iface.activeLayer()
+
+        # get unique values 
+        fni = layer.fieldNameIndex('intitule')
+        unique_values = layer.dataProvider().uniqueValues(fni)
+
+        # define categories
+        categories = []
+        for unique_value in unique_values:
+            # initialize the default symbol for this geometry type
+            symbol = QgsSymbolV2.defaultSymbol(layer.geometryType())
+
+            # configure a symbol layer
+            layer_style = {}
+            layer_style['color'] = '%d, %d, %d' % (randrange(0,256), randrange(0,256), randrange(0,256))
+            layer_style['outline'] = '#000000'
+            symbol_layer = QgsSimpleFillSymbolLayerV2.create(layer_style)
+
+            # replace default symbol layer with the configured one
+            if symbol_layer is not None:
+                symbol.changeSymbolLayer(0, symbol_layer)
+
+            # create renderer object
+            category = QgsRendererCategoryV2(unique_value, symbol, str(unique_value))
+            # entry for the list of category items
+            categories.append(category)
+
+        # create renderer object
+        renderer = QgsCategorizedSymbolRendererV2('test', categories)
+
+        # assign the created renderer to the layer
+        if renderer is not None:
+            layer.setRendererV2(renderer)
+
+        layer.triggerRepaint()
+
