@@ -502,6 +502,37 @@ class ViewsRefresher:
 
 
 
+    def add_pg_table(self, schema, table_name):
+        # Create a data source URI
+        uri = QgsDataSourceURI()
+
+        # set host name, port, database name, username and password
+        uri.setConnection(self.dlg.lineEdit_Host.text(), "5432", self.dlg.lineEdit_BD.text(), self.dlg.lineEdit_User.text(), self.dlg.lineEdit_Password.text())
+
+        # set database schema, table name, geometry column and optionally subset (WHERE clause)
+        # uri.setDataSource('temp', 'cheminement_al01', "geom")
+        uri.setDataSource(schema, table_name, None)
+
+        vlayer = QgsVectorLayer(uri.uri(False), table_name, "postgres")
+
+        # if not vlayer.isValid():
+        #     self.fenetreMessage(QMessageBox, "Error", "The layer %s is not valid" % vlayer.name())
+        #     return
+
+
+        # check first if the layer is already added to the map
+        layer_names = [layer.name() for layer in QgsMapLayerRegistry.instance().mapLayers().values()]
+        if table_name not in layer_names:
+            # Add the vector layer to the map
+            QgsMapLayerRegistry.instance().addMapLayers([vlayer])
+            self.fenetreMessage(QMessageBox, "Success", "Layer %s is loaded" % vlayer.name())
+
+        else :
+            # self.fenetreMessage(QMessageBox, "Success", "Layer %s already exists but it has been updated" % vlayer.name())
+            pass
+
+
+
     def refresh_views(self):
         try:
             noeud = self.dlg.comboBox_noeud.currentText()
@@ -536,11 +567,14 @@ class ViewsRefresher:
             for view in views_list:
                 query += "REFRESH MATERIALIZED VIEW " + view + "; \n"
                 self.fenetreMessage(QMessageBox, "info", view.split(".")[1])
-                self.add_pg_layer("prod", view.split(".")[1])
-                layer = QgsMapLayerRegistry.instance().mapLayersByName(view.split(".")[1])[0]
-                # exclude non-spatial tables
                 if view not in (baie, love, suf, cond_chem, cab_cond):
+                    self.add_pg_layer("prod", view.split(".")[1])
+                    layer = QgsMapLayerRegistry.instance().mapLayersByName(view.split(".")[1])[0]
+                    # exclude non-spatial tables
                     self.add_style(layer)
+
+                else:
+                    self.add_pg_table("prod", view.split(".")[1])
 
         except Exception as e:
             self.fenetreMessage(QMessageBox.Warning, "error", str(e))
