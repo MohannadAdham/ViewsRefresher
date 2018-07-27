@@ -126,7 +126,12 @@ class ViewsRefresher:
 
 
 
-
+        # self.fenetreMessage(QMessageBox, "info", "within add_group")
+        root = QgsProject.instance().layerTreeRoot()
+        first_group_name = "Livrables"
+        first_group = root.findGroup(first_group_name)
+        second_group_name = u"Controle Ingénierie et structure BDD"
+        self.second_group = first_group.findGroup(second_group_name)
 
 
 #"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" Listner migration P vers T """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -468,6 +473,11 @@ class ViewsRefresher:
             #         self.fenetreMessage(QMessageBox.Warning,"Erreur_connectToDb",str(e))
             #         cursor.close()
 
+        layers_names = ""
+        for lyr in QgsMapLayerRegistry.instance().mapLayers().values():
+            layers_names += lyr.name() + "\n"
+
+        self.fenetreMessage(QMessageBox, "info", "layers names : " + layers_names)
 
 
 
@@ -595,6 +605,16 @@ class ViewsRefresher:
                 else:
                     self.add_pg_table("prod", view.split(".")[1])
 
+
+                self.fenetreMessage(QMessageBox, "info", "before move_layer")
+                try:
+                    self.move_layer(view.split(".")[1], views_groups[view])
+                except Exception as e:
+                    self.fenetreMessage(QMessageBox.Warning, "error", str(e))
+
+
+
+
         except Exception as e:
             self.fenetreMessage(QMessageBox.Warning, "error", str(e))
 
@@ -671,4 +691,17 @@ class ViewsRefresher:
             second_group.addGroup(group_name)
 
 
+
+    def move_layer(self, view, group_name):
+        self.fenetreMessage(QMessageBox, "info", "within move_layer")
+        group = self.second_group.findGroup(group_name)
+        # layer=None
+        # for lyr in QgsMapLayerRegistry.instance().mapLayers().values():
+        #     if lyr.name() == view:
+        #         layer = lyr
+        #         break
+
+        layer = QgsMapLayerRegistry.instance().mapLayersByName(view)[0]
+        group.addLayer(layer)
+        self.fenetreMessage(QMessageBox, "info", "the layer " + layer.name() + " is added to the group " + group_name)
 
