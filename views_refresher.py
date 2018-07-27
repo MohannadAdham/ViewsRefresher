@@ -193,7 +193,7 @@ class ViewsRefresher:
         icon_path = ':/plugins/ViewsRefresher/icon.png'
         self.add_action(
             icon_path,
-            text=self.tr(u'Performs Cable Dimensioning'),
+            text=self.tr(u'Refreshes control views'),
             callback=self.run,
             parent=self.iface.mainWindow())
 
@@ -525,7 +525,7 @@ class ViewsRefresher:
         if table_name not in layer_names:
             # Add the vector layer to the map
             QgsMapLayerRegistry.instance().addMapLayers([vlayer])
-            self.fenetreMessage(QMessageBox, "Success", "Layer %s is loaded" % vlayer.name())
+            # self.fenetreMessage(QMessageBox, "Success", "Layer %s is loaded" % vlayer.name())
 
         else :
             # self.fenetreMessage(QMessageBox, "Success", "Layer %s already exists but it has been updated" % vlayer.name())
@@ -553,20 +553,39 @@ class ViewsRefresher:
             cab_cond = self.dlg.comboBox_cab_cond.currentText()
 
 
-            views_list = [adductabilite, noeud, suf, adresse, sitetech, baie, ptech, cheminement, conduite, cond_chem, cable, cab_cond, love, ebp, zpbo, zdep]
+            # views_list = [adductabilite, noeud, suf, adresse, sitetech, baie, ptech, cheminement, conduite, cond_chem, cable, cab_cond, love, ebp, zpbo, zdep]
 
+            views_groups = {adductabilite : "Reference", noeud : "Reference", suf : "Reference", adresse : "Reference", sitetech : "Hebergement", baie : "Hebergement", ptech : "Infrastructure d'acceuil",
+            cheminement : "Infrastructure d'acceuil", conduite : "Infrastructure d'acceuil", cond_chem : "Infrastructure d'acceuil", cable : "Infrastructure optique", ebp : "Infrastructure optique",
+            cab_cond : "Infrastructure optique", love : "Infrastructure optique", zpbo : "Zones d'expolitation", zdep : "Zones d'expolitation"}
+
+            groups_names = set(val for val in views_groups.values())
+
+            self.add_groups(groups_names)
 
             self.fenetreMessage(QMessageBox, "info", "within refresh_views")
-            query = ""
 
         except Exception as e:
             self.fenetreMessage(QMessageBox.Warning, "error", str(e))
 
 
+
         try:
-            for view in views_list:
-                query += "REFRESH MATERIALIZED VIEW " + view + "; \n"
-                self.fenetreMessage(QMessageBox, "info", view.split(".")[1])
+            query = ""
+            for view in views_groups.keys():
+                query += "REFRESH MATERIALIZED VIEW " + view + "; \n"       
+
+
+        except Exception as e:
+            self.fenetreMessage(QMessageBox.Warning, "error", str(e))
+
+
+        # self.executerRequette(query, False)
+
+
+        try:
+            for view in views_groups.keys():
+                # self.fenetreMessage(QMessageBox, "info", view.split(".")[1])
                 if view not in (baie, love, suf, cond_chem, cab_cond):
                     self.add_pg_layer("prod", view.split(".")[1])
                     layer = QgsMapLayerRegistry.instance().mapLayersByName(view.split(".")[1])[0]
@@ -580,9 +599,6 @@ class ViewsRefresher:
             self.fenetreMessage(QMessageBox.Warning, "error", str(e))
 
 
-        # self.executerRequette(query, False)
-        
-        self.fenetreMessage(QMessageBox, "Success", "The query is executed")
         self.fenetreMessage(QMessageBox, "Success", query)
 
 
@@ -607,7 +623,7 @@ class ViewsRefresher:
             # configure a symbol layer
             layer_style = {}
             layer_style['color'] = '%d, %d, %d' % (randrange(0,256), randrange(0,256), randrange(0,256))
-            layer_style['outline'] = '#000000'
+            layer_style['outline'] = None
             symbol_layer = QgsSimpleFillSymbolLayerV2.create(layer_style)
 
             # replace default symbol layer with the configured one
@@ -620,11 +636,39 @@ class ViewsRefresher:
             categories.append(category)
 
         # create renderer object
-        renderer = QgsCategorizedSymbolRendererV2('test', categories)
+        renderer = QgsCategorizedSymbolRendererV2('intitule', categories)
 
         # assign the created renderer to the layer
         if renderer is not None:
             layer.setRendererV2(renderer)
 
         layer.triggerRepaint()
+
+
+
+    def add_groups(self, groups_names):
+        self.fenetreMessage(QMessageBox, "info", "within add_group")
+        root = QgsProject.instance().layerTreeRoot()
+        self.fenetreMessage(QMessageBox, "info", str(root))
+        first_group_name = "Livrables"
+        first_group = root.findGroup(first_group_name)
+        self.fenetreMessage(QMessageBox, "info", first_group.name())
+        second_group_name = u"Controle Ingénierie et structure BDD"
+        second_group = first_group.findGroup(second_group_name)
+        self.fenetreMessage(QMessageBox, "info", second_group.name())
+
+        # group = root.findGroup(init_group_name)
+        # test_string = ""
+        # for group in root.children():
+        #     test_string += "---" + group.name() + "--- \n"
+            # for child in group.children():
+            #     test_string += child.name() + "\n"
+        # self.fenetreMessage(QMessageBox, "info", test_string)
+
+        # group_names = ["Reference", "Hebergement", "Infrastructure d'acceuil", "Infrastructure optique", "Zones d'expolitation" ]
+
+        for group_name in groups_names:
+            second_group.addGroup(group_name)
+
+
 
