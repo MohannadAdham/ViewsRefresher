@@ -127,11 +127,6 @@ class ViewsRefresher:
 
 
         # self.fenetreMessage(QMessageBox, "info", "within add_group")
-        root = QgsProject.instance().layerTreeRoot()
-        first_group_name = "Livrables"
-        first_group = root.findGroup(first_group_name)
-        second_group_name = u"Controle Ingénierie et structure BDD"
-        self.second_group = first_group.findGroup(second_group_name)
 
 
 #"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" Listner migration P vers T """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -412,16 +407,9 @@ class ViewsRefresher:
                 self.dlg.findChild(QComboBox, "comboBox_cab_cond").setEnabled(True)
 
 
-
-                # self.dlg.findChild(QPushButton, "pushButton_verifier_topologie").setEnabled(True)
-                # self.dlg.findChild(QPushButton, "pushButton_orientation").setEnabled(True)
-                # self.dlg.findChild(QPushButton, "pushButton_fibres_utiles").setEnabled(True)
-                # self.dlg.findChild(QPushButton, "pushButton_dimensions").setEnabled(True)
-                # self.dlg.findChild(QPushButton, "pushButton_mettre_a_jour_chemin").setEnabled(True)
                 self.dlg.findChild(QPushButton, "pushButton_mettre_a_jour_cable").setEnabled(True)
 
-                # self.dlg.findChild(QPushButton, "pushButton_mettre_a_jour_chemin")
-                # self.dlg.findChild(QPushButton, "pushButton_mettre_a_jour_cable").setEnabled(True)
+
                 # Disable connection button
                 self.dlg.findChild(QPushButton, "pushButton_connexion").setEnabled(False)
 
@@ -454,7 +442,7 @@ class ViewsRefresher:
                 #     self.fenetreMessage(QMessageBox.Warning,"result of query", elm[0])
 
                 # 3 - ZSRO (zs_refpm)
-                self.remplir_menu_deroulant_reference(self.dlg.comboBox_zs_refpm, ("SELECT zs_refpm as refpm FROM " + self.dlg.Schema_prod.text() + ".p_zsro ;"), 'PMT_26325_FO01')
+                # self.remplir_menu_deroulant_reference(self.dlg.comboBox_zs_refpm, ("SELECT zs_refpm as refpm FROM " + self.dlg.Schema_prod.text() + ".p_zsro ;"), 'PMT_26325_FO01')
 
                 # print "SELECT zs_refpm FROM " + self.dlg.Schema_grace.text() + ".t_zsro;"
 
@@ -481,151 +469,271 @@ class ViewsRefresher:
 
 
 
-    def add_pg_layer(self, schema, table_name):
-        # Create a data source URI
-        uri = QgsDataSourceURI()
+    # def add_pg_layer(self, schema, table_name):
+    #     self.fenetreMessage(QMessageBox.Warning, "info", "within add_pg_layer")
+    #     # Create a data source URI
+    #     uri = QgsDataSourceURI()
 
-        # set host name, port, database name, username and password
-        uri.setConnection(self.dlg.lineEdit_Host.text(), "5432", self.dlg.lineEdit_BD.text(), self.dlg.lineEdit_User.text(), self.dlg.lineEdit_Password.text())
+    #     # set host name, port, database name, username and password
+    #     uri.setConnection(self.dlg.lineEdit_Host.text(), "5432", self.dlg.lineEdit_BD.text(), self.dlg.lineEdit_User.text(), self.dlg.lineEdit_Password.text())
 
-        # set database schema, table name, geometry column and optionally subset (WHERE clause)
-        # uri.setDataSource('temp', 'cheminement_al01', "geom")
-        uri.setDataSource(schema, table_name, "geom")
+    #     # set database schema, table name, geometry column and optionally subset (WHERE clause)
+    #     # uri.setDataSource('temp', 'cheminement_al01', "geom")
+    #     uri.setDataSource(schema, table_name, "geom")
 
-        vlayer = QgsVectorLayer(uri.uri(False), table_name, "postgres")
+    #     vlayer = QgsVectorLayer(uri.uri(False), table_name, "postgres")
+    #     try:
+    #         self.fenetreMessage(QMessageBox, "info", vlayer.name())
+    #     except Exception as e:
+    #         self.fenetreMessage(QMessageBox.Warning, "error", str(e))
 
-        # if not vlayer.isValid():
-        #     self.fenetreMessage(QMessageBox, "Error", "The layer %s is not valid" % vlayer.name())
-        #     return
-
-
-        # check first if the layer is already added to the map
-        layer_names = [layer.name() for layer in QgsMapLayerRegistry.instance().mapLayers().values()]
-        if table_name not in layer_names:
-            # Add the vector layer to the map
-            QgsMapLayerRegistry.instance().addMapLayers([vlayer])
-            self.fenetreMessage(QMessageBox, "Success", "Layer %s is loaded" % vlayer.name())
-
-        else :
-            # self.fenetreMessage(QMessageBox, "Success", "Layer %s already exists but it has been updated" % vlayer.name())
-            pass
+    #     # if not vlayer.isValid():
+    #     #     self.fenetreMessage(QMessageBox, "Error", "The layer %s is not valid" % vlayer.name())
+    #     #     return
 
 
-
-    def add_pg_table(self, schema, table_name):
-        # Create a data source URI
-        uri = QgsDataSourceURI()
-
-        # set host name, port, database name, username and password
-        uri.setConnection(self.dlg.lineEdit_Host.text(), "5432", self.dlg.lineEdit_BD.text(), self.dlg.lineEdit_User.text(), self.dlg.lineEdit_Password.text())
-
-        # set database schema, table name, geometry column and optionally subset (WHERE clause)
-        # uri.setDataSource('temp', 'cheminement_al01', "geom")
-        uri.setDataSource(schema, table_name, None)
-
-        vlayer = QgsVectorLayer(uri.uri(False), table_name, "postgres")
-
-        # if not vlayer.isValid():
-        #     self.fenetreMessage(QMessageBox, "Error", "The layer %s is not valid" % vlayer.name())
-        #     return
+    #     try:
+    #         self.second_group.addLayer(vlayer)
+    #     except Exception as e:
+    #         self.fenetreMessage(QMessageBox.Warning, "error", str(e))
 
 
-        # check first if the layer is already added to the map
-        layer_names = [layer.name() for layer in QgsMapLayerRegistry.instance().mapLayers().values()]
-        if table_name not in layer_names:
-            # Add the vector layer to the map
-            QgsMapLayerRegistry.instance().addMapLayers([vlayer])
-            # self.fenetreMessage(QMessageBox, "Success", "Layer %s is loaded" % vlayer.name())
+    #     # check first if the layer is already added to the map
+    #     layer_names = [layer.name() for layer in QgsMapLayerRegistry.instance().mapLayers().values()]
+    #     if table_name not in layer_names:
+    #         # Add the vector layer to the map
+    #         QgsMapLayerRegistry.instance().addMapLayers([vlayer])
+    #         self.fenetreMessage(QMessageBox, "Success", "Layer %s is loaded" % vlayer.name())
 
-        else :
-            # self.fenetreMessage(QMessageBox, "Success", "Layer %s already exists but it has been updated" % vlayer.name())
-            pass
+    #     else :
+    #         self.fenetreMessage(QMessageBox, "Success", "Layer %s already exists but it has been updated" % vlayer.name())
+            
+
+
+
+    # def add_pg_table(self, schema, table_name):
+    #     self.fenetreMessage(QMessageBox.Warning, "info", "within add_pg_table")
+    #     # Create a data source URI
+    #     uri = QgsDataSourceURI()
+
+    #     # set host name, port, database name, username and password
+    #     uri.setConnection(self.dlg.lineEdit_Host.text(), "5432", self.dlg.lineEdit_BD.text(), self.dlg.lineEdit_User.text(), self.dlg.lineEdit_Password.text())
+
+    #     # set database schema, table name, geometry column and optionally subset (WHERE clause)
+    #     # uri.setDataSource('temp', 'cheminement_al01', "geom")
+    #     uri.setDataSource(schema, table_name, None)
+
+    #     vlayer = QgsVectorLayer(uri.uri(False), table_name, "postgres")
+
+
+    #     try:
+    #         self.fenetreMessage(QMessageBox, "info", vlayer.name())
+    #     except Exception as e:
+    #         self.fenetreMessage(QMessageBox.Warning, "error", str(e))
+
+    #     # if not vlayer.isValid():
+    #     #     self.fenetreMessage(QMessageBox, "Error", "The layer %s is not valid" % vlayer.name())
+    #     #     return
+
+    #     try:
+    #         self.second_group.addLayer(vlayer)
+    #     except Exception as e:
+    #         self.fenetreMessage(QMessageBox.Warning, "error", str(e))
+
+
+
+    #     # check first if the layer is already added to the map
+    #     layer_names = [layer.name() for layer in QgsMapLayerRegistry.instance().mapLayers().values()]
+    #     if table_name not in layer_names:
+    #         # Add the vector layer to the map
+    #         QgsMapLayerRegistry.instance().addMapLayers([vlayer])
+    #         # self.fenetreMessage(QMessageBox, "Success", "Layer %s is loaded" % vlayer.name())
+
+    #     else :
+    #         # self.fenetreMessage(QMessageBox, "Success", "Layer %s already exists but it has been updated" % vlayer.name())
+    #         pass
 
 
 
     def refresh_views(self):
-        try:
-            noeud = self.dlg.comboBox_noeud.currentText()
-            adductabilite = self.dlg.comboBox_adductabilite.currentText()
-            adresse = self.dlg.comboBox_adresse.currentText()
-            sitetech = self.dlg.comboBox_sitetech.currentText()
-            baie = self.dlg.comboBox_baie.currentText()
-            ptech = self.dlg.comboBox_ptech.currentText()
-            cheminement = self.dlg.comboBox_cheminement.currentText()
-            conduite = self.dlg.comboBox_conduite.currentText()
-            ebp = self.dlg.comboBox_ebp.currentText()
-            zpbo = self.dlg.comboBox_zpbo.currentText()
-            cable = self.dlg.comboBox_cable.currentText()
-            love = self.dlg.comboBox_love.currentText()
-            zdep = self.dlg.comboBox_zdep.currentText()
-            suf = self.dlg.comboBox_suf.currentText()
-            cond_chem = self.dlg.comboBox_cond_chem.currentText()
-            cab_cond = self.dlg.comboBox_cab_cond.currentText()
+        
+        noeud = self.dlg.comboBox_noeud.currentText()
+        adductabilite = self.dlg.comboBox_adductabilite.currentText()
+        adresse = self.dlg.comboBox_adresse.currentText()
+        sitetech = self.dlg.comboBox_sitetech.currentText()
+        baie = self.dlg.comboBox_baie.currentText()
+        ptech = self.dlg.comboBox_ptech.currentText()
+        cheminement = self.dlg.comboBox_cheminement.currentText()
+        conduite = self.dlg.comboBox_conduite.currentText()
+        ebp = self.dlg.comboBox_ebp.currentText()
+        zpbo = self.dlg.comboBox_zpbo.currentText()
+        cable = self.dlg.comboBox_cable.currentText()
+        love = self.dlg.comboBox_love.currentText()
+        zdep = self.dlg.comboBox_zdep.currentText()
+        # suf = self.dlg.comboBox_suf.currentText()
+        # cond_chem = self.dlg.comboBox_cond_chem.currentText()
+        # cab_cond = self.dlg.comboBox_cab_cond.currentText()
 
-
-            # views_list = [adductabilite, noeud, suf, adresse, sitetech, baie, ptech, cheminement, conduite, cond_chem, cable, cab_cond, love, ebp, zpbo, zdep]
-
-            views_groups = {adductabilite : "Reference", noeud : "Reference", suf : "Reference", adresse : "Reference", sitetech : "Hebergement", baie : "Hebergement", ptech : "Infrastructure d'acceuil",
+        # --------------------------- Refresh the Views -------------------------------------------------
+        # create a dictionary of the views and the corresponding subgroups
+        views_groups = {adductabilite : "Reference", noeud : "Reference", suf : "Reference", adresse : "Reference", sitetech : "Hebergement", baie : "Hebergement", ptech : "Infrastructure d'acceuil",
             cheminement : "Infrastructure d'acceuil", conduite : "Infrastructure d'acceuil", cond_chem : "Infrastructure d'acceuil", cable : "Infrastructure optique", ebp : "Infrastructure optique",
             cab_cond : "Infrastructure optique", love : "Infrastructure optique", zpbo : "Zones d'expolitation", zdep : "Zones d'expolitation"}
 
-            groups_names = set(val for val in views_groups.values())
+        # create the query string
+        query = ""
+        for view in views_groups.keys():
+            query += "REFRESH MATERIALIZED VIEW " + view + "; \n"  
 
-            self.add_groups(groups_names)
-
-            self.fenetreMessage(QMessageBox, "info", "within refresh_views")
-
-        except Exception as e:
-            self.fenetreMessage(QMessageBox.Warning, "error", str(e))
-
-
-
-        try:
-            query = ""
-            for view in views_groups.keys():
-                query += "REFRESH MATERIALIZED VIEW " + view + "; \n"       
-
-
-        except Exception as e:
-            self.fenetreMessage(QMessageBox.Warning, "error", str(e))
-
-
+        # execute the query
         # self.executerRequette(query, False)
 
+        # ---------------------------- Refresh the layers within the project -------------------------
+        # create a list of the names of the subgroups to verify whether these subgroups already exist or not
+        root = QgsProject.instance().layerTreeRoot()
+        self.root_group = root.findGroup(u"Controle Ingénierie et structure BDD")
+        subgroups_names = []
+        for child in self.root_group.children():
+            if child.name().find("vs_") == -1:
+                subgroups_names.append(child.name())
 
-        try:
+        self.fenetreMessage(QMessageBox, "info", len(subgroups_names))
+        # -------------------- first case : the subgroups don't exist yet --------------------------------
+        if len(subgroups_names) < 5:
+            # get the names of the subgroups to create
+            groups_names = set(val for val in views_groups.values())
+            # create the subgroups
+            try:
+                self.add_groups(groups_names)
+            except Exception as e:
+                self.fenetreMessage(QMessageBox.Warning, "error", str(e))
+
+            # copy the layers from the root group to the subgroups
             for view in views_groups.keys():
-                # self.fenetreMessage(QMessageBox, "info", view.split(".")[1])
-                if view not in (baie, love, suf, cond_chem, cab_cond):
-                    self.add_pg_layer("prod", view.split(".")[1])
-                    layer = QgsMapLayerRegistry.instance().mapLayersByName(view.split(".")[1])[0]
-                    # exclude non-spatial tables
-                    self.add_style(layer)
-
-                else:
-                    self.add_pg_table("prod", view.split(".")[1])
-
-
-                self.fenetreMessage(QMessageBox, "info", "before move_layer")
                 try:
                     self.move_layer(view.split(".")[1], views_groups[view])
                 except Exception as e:
                     self.fenetreMessage(QMessageBox.Warning, "error", str(e))
 
 
+            # ----------------------------- End of the first case ---------------------------------------
+
+        # -------------------- second case : the subgroups already exist --------------------------------
+        # In the second case we need only to refresh the style of the layers within the subgroups.
 
 
-        except Exception as e:
-            self.fenetreMessage(QMessageBox.Warning, "error", str(e))
+        # -------------------------------- End of the second case ---------------------------------------
+        # style the new layers in the subgroups
+        # Add the style to only spatial layers ----------------
+        for view in views_groups.keys():
+            if view not in (baie, lovesuf, cond_chem, cab_cond):
+                # self.fenetreMessage(QMessageBox.Warning, "info", "before add_pg_layer " + "prod." + view.split(".")[1])
+                layer = QgsMapLayerRegistry.instance().mapLayersByName(view.split(".")[1])[0]
+                self.add_style(layer)
 
 
-        self.fenetreMessage(QMessageBox, "Success", query)
 
 
+
+        #     # first_group_name = "Livrables"
+        #     # first_group = root.findGroup(first_group_name)
+        #     second_group_name = u"Controle Ingénierie et structure BDD"
+        #     self.second_group = first_group.findGroup(second_group_name)
+
+
+        #     self.fenetreMessage(QMessageBox, "info", "before sleep")
+        #     # import time
+        #     # time.sleep(5000)
+        #     self.fenetreMessage(QMessageBox, "info", "after sleep")
+
+        #     # views_list = [adductabilite, noeud, suf, adresse, sitetech, baie, ptech, cheminement, conduite, cond_chem, cable, cab_cond, love, ebp, zpbo, zdep]
+
+        #     views_groups = {adductabilite : "Reference", noeud : "Reference", adresse : "Reference", sitetech : "Hebergement", baie : "Hebergement", ptech : "Infrastructure d'acceuil",
+        #     cheminement : "Infrastructure d'acceuil", conduite : "Infrastructure d'acceuil", cable : "Infrastructure optique", ebp : "Infrastructure optique",
+        #     love : "Infrastructure optique", zpbo : "Zones d'expolitation", zdep : "Zones d'expolitation"}
+
+        #     groups_names = set(val for val in views_groups.values())
+
+        #     self.add_groups(groups_names)
+
+        #     self.fenetreMessage(QMessageBox, "info", "After add_groups")
+
+        # except Exception as e:
+        #     self.fenetreMessage(QMessageBox.Warning, "error", str(e))
+
+
+
+        # try:
+        #     query = ""
+        #     for view in views_groups.keys():
+        #         query += "REFRESH MATERIALIZED VIEW " + view + "; \n"       
+
+
+        # except Exception as e:
+        #     self.fenetreMessage(QMessageBox.Warning, "error", str(e))
+
+
+        # # self.executerRequette(query, False)
+
+
+
+        # try:
+        #     # self.fenetreMessage(QMessageBox.Warning, "info", "before adding layers")
+        #     for view in views_groups.keys():
+        #         # self.fenetreMessage(QMessageBox, "info", view.split(".")[1])
+
+        #         # else:
+        #         #     self.fenetreMessage(QMessageBox.Warning, "info", "before add_pg_table " + "prod." + view.split(".")[1])
+
+        #         #     self.fenetreMessage(QMessageBox.Warning, "info", "after add_pg_table")
+
+        #         # ---------------- move the layers to the subgroups ---------------------
+        #         self.fenetreMessage(QMessageBox, "info", "before move_layer")
+        #         try:
+        #             self.move_layer(view.split(".")[1], views_groups[view])
+        #         except Exception as e:
+        #             self.fenetreMessage(QMessageBox.Warning, "error", str(e))
+
+
+        #         # ------------------- Add the style to only spatial layers ----------------
+        #         if view not in (baie, love):
+        #             # self.fenetreMessage(QMessageBox.Warning, "info", "before add_pg_layer " + "prod." + view.split(".")[1])
+        #             self.fenetreMessage(QMessageBox.Warning, "info", "after add_pg_layer")
+        #             layer = QgsMapLayerRegistry.instance().mapLayersByName(view.split(".")[1])[0]
+        #             # exclude non-spatial tables
+        #             self.add_style(layer)
+        #         # ------------------------------------------------------------------------
+
+        #     # self.fenetreMessage(QMessageBox, "Success", query)
+
+
+        # except Exception as e:
+        #     self.fenetreMessage(QMessageBox.Warning, "error", str(e))
+
+        # self.fenetreMessage(QMessageBox.Warning, "info", "before deleting children")
+
+        # # ---------- remove all children within the root group ---------------
+        # # self.second_group.removeAllChildren()
+        # try:
+        #     for child in self.second_group.children():
+        #         if child.name().find("vs_") == 0:
+        #             self.second_group.removeChildNode(child)
+        # except Exception as e:
+        #     self.fenetreMessage(QMessageBox.Warning, "error", str(e))  
+
+
+        # self.fenetreMessage(QMessageBox.Warning, "info", "after deleting children")     
+        #     # else:
+        #     #     for child2 in child.children():
+        #     #         child.removeChildNode(child2)
+
+
+    
 
 
     def add_style(self, layer):
         from random import randrange
+        # self.fenetreMessage(QMessageBox, 'info', 'within add style for layer ' + layer.name())
 
         # Get the active layer (must be a vector layer)
         # layer = qgis.utils.iface.activeLayer()
@@ -643,7 +751,31 @@ class ViewsRefresher:
             # configure a symbol layer
             layer_style = {}
             layer_style['color'] = '%d, %d, %d' % (randrange(0,256), randrange(0,256), randrange(0,256))
-            layer_style['outline'] = None
+
+            if layer.wkbType()==QGis.WKBPoint:
+                # print 'Layer is a pojnt layer'
+                layer_style['color'] = '%d, %d, %d' % (randrange(240,256), randrange(0,20), randrange(0,16))
+                layer_style['size'] = '2'
+                symbol_layer = QgsSimpleMarkerSymbolLayerV2.create(layer_style)
+                symbol_layer.setOutlineWidth(0)
+
+
+            if layer.wkbType()==QGis.WKBLineString:
+                # print 'Layer is a line layer'
+                layer_style['width_border'] = '0.46'
+                layer_style['size'] = '0.46'
+                # layer_style['color_border'] = 'red'
+                symbol_layer = QgsSimpleFillSymbolLayerV2.create(layer_style)
+
+
+            if layer.wkbType()==QGis.WKBPolygon or layer.wkbType()==QGis.WKBMultiPolygon:
+                # print 'Layer is a polygon layer'
+                layer_style['width_border'] = '0.46'
+                layer_style['color_border'] = 'black'
+                symbol_layer = QgsSimpleFillSymbolLayerV2.create(layer_style)
+
+
+
             symbol_layer = QgsSimpleFillSymbolLayerV2.create(layer_style)
 
             # replace default symbol layer with the configured one
@@ -662,46 +794,46 @@ class ViewsRefresher:
         if renderer is not None:
             layer.setRendererV2(renderer)
 
+        # layer.rendererChanged.connect(self.changed_renderer)
         layer.triggerRepaint()
 
 
 
+    # def changed_renderer(self):
+    #     self.fenetreMessage(QMessageBox, 'info', 'the renderer is changed')
+
     def add_groups(self, groups_names):
-        self.fenetreMessage(QMessageBox, "info", "within add_group")
-        root = QgsProject.instance().layerTreeRoot()
-        self.fenetreMessage(QMessageBox, "info", str(root))
-        first_group_name = "Livrables"
-        first_group = root.findGroup(first_group_name)
-        self.fenetreMessage(QMessageBox, "info", first_group.name())
-        second_group_name = u"Controle Ingénierie et structure BDD"
-        second_group = first_group.findGroup(second_group_name)
-        self.fenetreMessage(QMessageBox, "info", second_group.name())
+        # self.fenetreMessage(QMessageBox, "info", "within add_group")
 
-        # group = root.findGroup(init_group_name)
-        # test_string = ""
-        # for group in root.children():
-        #     test_string += "---" + group.name() + "--- \n"
-            # for child in group.children():
-            #     test_string += child.name() + "\n"
-        # self.fenetreMessage(QMessageBox, "info", test_string)
-
-        # group_names = ["Reference", "Hebergement", "Infrastructure d'acceuil", "Infrastructure optique", "Zones d'expolitation" ]
 
         for group_name in groups_names:
-            second_group.addGroup(group_name)
+            self.root_group.addGroup(group_name)
+            # self.fenetreMessage(QMessageBox, "info", "The group " + group_name + " is added")
+
 
 
 
     def move_layer(self, view, group_name):
-        self.fenetreMessage(QMessageBox, "info", "within move_layer")
-        group = self.second_group.findGroup(group_name)
-        # layer=None
-        # for lyr in QgsMapLayerRegistry.instance().mapLayers().values():
-        #     if lyr.name() == view:
-        #         layer = lyr
-        #         break
-
+        # self.fenetreMessage(QMessageBox, "info", "within move_layer")
+        # find the subgroup
+        group = self.root_group.findGroup(group_name)
+        # find the layer within the root_group
         layer = QgsMapLayerRegistry.instance().mapLayersByName(view)[0]
+        # get the id of the layer
+        layer_id = layer.id()
+        # copy the layer to the subgroup
         group.addLayer(layer)
-        self.fenetreMessage(QMessageBox, "info", "the layer " + layer.name() + " is added to the group " + group_name)
+        # remove the layer (legend entry) from the root_group
+        # get the child node by id
+        child_node = self.root_group.findLayer(layer_id)
+        # self.fenetreMessage(QMessageBox, "info", "group : " + self.root_group.name() + ", view : " + view)
+        # self.fenetreMessage(QMessageBox, "info", child_node.name())
+        try:
+            # remove the childeNode from the root group
+            self.root_group.removeChildNode(child_node)
+        except Exception as e:
+            self.fenetreMessage(QMessageBox.Warning, "error", str(e))
+
+        # QgsMapLayerRegistry.instance().removeMapLayer(layer_id)
+
 
