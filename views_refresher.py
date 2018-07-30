@@ -586,7 +586,7 @@ class ViewsRefresher:
             query += "REFRESH MATERIALIZED VIEW " + view + "; \n"  
 
         # execute the query
-        # self.executerRequette(query, False)
+        self.executerRequette(query, False)
 
         # ---------------------------- Refresh the layers within the project -------------------------
         # create a list of the names of the subgroups to verify whether these subgroups already exist or not
@@ -764,7 +764,7 @@ class ViewsRefresher:
 
             if layer.wkbType()==QGis.WKBPoint:
                 # print 'Layer is a pojnt layer'
-                layer_style['color'] = '%d, %d, %d' % (randrange(240,256), randrange(0,20), randrange(0,16))
+                layer_style['color'] = '%d, %d, %d' % (randrange(0,256), randrange(0,256), randrange(0,256))
                 layer_style['size'] = '2'
                 symbol_layer = QgsSimpleMarkerSymbolLayerV2.create(layer_style)
                 symbol_layer.setOutlineWidth(0)
