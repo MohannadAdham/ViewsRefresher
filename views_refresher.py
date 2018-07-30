@@ -556,7 +556,7 @@ class ViewsRefresher:
 
 
     def refresh_views(self):
-        
+        self.fenetreMessage(QMessageBox, "info", "within refresh_views")
         noeud = self.dlg.comboBox_noeud.currentText()
         adductabilite = self.dlg.comboBox_adductabilite.currentText()
         adresse = self.dlg.comboBox_adresse.currentText()
@@ -570,16 +570,16 @@ class ViewsRefresher:
         cable = self.dlg.comboBox_cable.currentText()
         love = self.dlg.comboBox_love.currentText()
         zdep = self.dlg.comboBox_zdep.currentText()
-        # suf = self.dlg.comboBox_suf.currentText()
-        # cond_chem = self.dlg.comboBox_cond_chem.currentText()
-        # cab_cond = self.dlg.comboBox_cab_cond.currentText()
+        suf = self.dlg.comboBox_suf.currentText()
+        cond_chem = self.dlg.comboBox_cond_chem.currentText()
+        cab_cond = self.dlg.comboBox_cab_cond.currentText()
 
         # --------------------------- Refresh the Views -------------------------------------------------
         # create a dictionary of the views and the corresponding subgroups
         views_groups = {adductabilite : "Reference", noeud : "Reference", suf : "Reference", adresse : "Reference", sitetech : "Hebergement", baie : "Hebergement", ptech : "Infrastructure d'acceuil",
             cheminement : "Infrastructure d'acceuil", conduite : "Infrastructure d'acceuil", cond_chem : "Infrastructure d'acceuil", cable : "Infrastructure optique", ebp : "Infrastructure optique",
             cab_cond : "Infrastructure optique", love : "Infrastructure optique", zpbo : "Zones d'expolitation", zdep : "Zones d'expolitation"}
-
+        self.fenetreMessage(QMessageBox, "info", str(views_groups))
         # create the query string
         query = ""
         for view in views_groups.keys():
@@ -592,12 +592,22 @@ class ViewsRefresher:
         # create a list of the names of the subgroups to verify whether these subgroups already exist or not
         root = QgsProject.instance().layerTreeRoot()
         self.root_group = root.findGroup(u"Controle Ingénierie et structure BDD")
-        subgroups_names = []
-        for child in self.root_group.children():
-            if child.name().find("vs_") == -1:
-                subgroups_names.append(child.name())
 
-        self.fenetreMessage(QMessageBox, "info", len(subgroups_names))
+        self.fenetreMessage(QMessageBox, "info", self.root_group.name())
+
+        try:
+            subgroups_names = []
+            for child in self.root_group.children():
+                # if child.name().find("vs_") == -1:
+                # verify if the child is a group
+                if isinstance(child, QgsLayerTreeGroup):
+                    subgroups_names.append(child.name())
+                    # self.fenetreMessage(QMessageBox.Warning, "info", type(child))
+
+        except Exception as e:
+            self.fenetreMessage(QMessageBox.Warning, "Error", str(e))
+
+        self.fenetreMessage(QMessageBox, "info", "after creating subgroups_names")
         # -------------------- first case : the subgroups don't exist yet --------------------------------
         if len(subgroups_names) < 5:
             # get the names of the subgroups to create
