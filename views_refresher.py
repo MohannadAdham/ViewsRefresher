@@ -465,7 +465,7 @@ class ViewsRefresher:
         for lyr in QgsMapLayerRegistry.instance().mapLayers().values():
             layers_names += lyr.name() + "\n"
 
-        self.fenetreMessage(QMessageBox, "info", "layers names : " + layers_names)
+        # self.fenetreMessage(QMessageBox, "info", "layers names : " + layers_names)
 
 
 
@@ -556,7 +556,7 @@ class ViewsRefresher:
 
 
     def refresh_views(self):
-        self.fenetreMessage(QMessageBox, "info", "within refresh_views")
+        # self.fenetreMessage(QMessageBox, "info", "within refresh_views")
         noeud = self.dlg.comboBox_noeud.currentText()
         adductabilite = self.dlg.comboBox_adductabilite.currentText()
         adresse = self.dlg.comboBox_adresse.currentText()
@@ -579,7 +579,7 @@ class ViewsRefresher:
         views_groups = {adductabilite : "Reference", noeud : "Reference", suf : "Reference", adresse : "Reference", sitetech : "Hebergement", baie : "Hebergement", ptech : "Infrastructure d'acceuil",
             cheminement : "Infrastructure d'acceuil", conduite : "Infrastructure d'acceuil", cond_chem : "Infrastructure d'acceuil", cable : "Infrastructure optique", ebp : "Infrastructure optique",
             cab_cond : "Infrastructure optique", love : "Infrastructure optique", zpbo : "Zones d'expolitation", zdep : "Zones d'expolitation"}
-        self.fenetreMessage(QMessageBox, "info", str(views_groups))
+        # self.fenetreMessage(QMessageBox, "info", str(views_groups))
         # create the query string
         query = ""
         for view in views_groups.keys():
@@ -593,7 +593,7 @@ class ViewsRefresher:
         root = QgsProject.instance().layerTreeRoot()
         self.root_group = root.findGroup(u"Controle Ingénierie et structure BDD")
 
-        self.fenetreMessage(QMessageBox, "info", self.root_group.name())
+        # self.fenetreMessage(QMessageBox, "info", self.root_group.name())
 
         try:
             subgroups_names = []
@@ -607,7 +607,7 @@ class ViewsRefresher:
         except Exception as e:
             self.fenetreMessage(QMessageBox.Warning, "Error", str(e))
 
-        self.fenetreMessage(QMessageBox, "info", "after creating subgroups_names")
+        # self.fenetreMessage(QMessageBox, "info", "after creating subgroups_names")
         # -------------------- first case : the subgroups don't exist yet --------------------------------
         if len(subgroups_names) < 5:
             # get the names of the subgroups to create
