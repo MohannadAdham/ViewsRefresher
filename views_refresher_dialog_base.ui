@@ -28,9 +28,110 @@
         <string>Vues :</string>
        </property>
        <layout class="QGridLayout" name="gridLayout_5">
-        <item row="0" column="0">
-         <layout class="QGridLayout" name="gridLayout_4">
-          <item row="0" column="1">
+        <item row="4" column="0">
+         <layout class="QGridLayout" name="gridLayout_4" columnstretch="1,3,3">
+          <property name="sizeConstraint">
+           <enum>QLayout::SetDefaultConstraint</enum>
+          </property>
+          <item row="25" column="0" alignment="Qt::AlignHCenter">
+           <widget class="QCheckBox" name="checkBox_cond_chem">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="23" column="0" alignment="Qt::AlignHCenter">
+           <widget class="QCheckBox" name="checkBox_suf">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="11" column="0" alignment="Qt::AlignHCenter">
+           <widget class="QCheckBox" name="checkBox_conduite">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="27" column="0" alignment="Qt::AlignHCenter">
+           <widget class="QCheckBox" name="checkBox_cab_cond">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="14" column="0" alignment="Qt::AlignHCenter">
+           <widget class="QCheckBox" name="checkBox_ebp">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0" alignment="Qt::AlignHCenter">
+           <widget class="QCheckBox" name="checkBox_adresse">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0" alignment="Qt::AlignHCenter">
+           <widget class="QCheckBox" name="checkBox_baie">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="0" alignment="Qt::AlignHCenter">
+           <widget class="QCheckBox" name="checkBox_ptech">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="0" alignment="Qt::AlignHCenter">
+           <widget class="QCheckBox" name="checkBox_cheminement">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="12" column="0" alignment="Qt::AlignHCenter">
+           <widget class="QCheckBox" name="checkBox_sitetech">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="20" column="0" alignment="Qt::AlignHCenter">
+           <widget class="QCheckBox" name="checkBox_love">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="22" column="0" alignment="Qt::AlignHCenter">
+           <widget class="QCheckBox" name="checkBox_zdep">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0" alignment="Qt::AlignHCenter">
+           <widget class="QCheckBox" name="checkBox_adductabilite">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="18" column="0" alignment="Qt::AlignHCenter">
+           <widget class="QCheckBox" name="checkBox_cable">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
            <widget class="QComboBox" name="comboBox_noeud">
             <property name="enabled">
              <bool>false</bool>
@@ -40,98 +141,105 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="0">
+          <item row="0" column="1">
            <widget class="QLabel" name="label_4">
             <property name="text">
              <string>Controles  noeud</string>
             </property>
            </widget>
           </item>
-          <item row="3" column="1">
+          <item row="3" column="2">
            <widget class="QComboBox" name="comboBox_adresse">
             <property name="enabled">
              <bool>false</bool>
             </property>
            </widget>
           </item>
-          <item row="14" column="0">
+          <item row="14" column="1">
            <widget class="QLabel" name="label_6">
             <property name="text">
              <string>Controles ebp</string>
             </property>
            </widget>
           </item>
-          <item row="11" column="0">
+          <item row="11" column="1">
            <widget class="QLabel" name="label_5">
             <property name="text">
              <string>Controles conduite</string>
             </property>
            </widget>
           </item>
-          <item row="11" column="1">
+          <item row="11" column="2">
            <widget class="QComboBox" name="comboBox_conduite">
             <property name="enabled">
              <bool>false</bool>
             </property>
            </widget>
           </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="label_2">
-            <property name="text">
-             <string>Controles adresse</string>
-            </property>
-           </widget>
-          </item>
-          <item row="18" column="1">
+          <item row="18" column="2">
            <widget class="QComboBox" name="comboBox_cable">
             <property name="enabled">
              <bool>false</bool>
             </property>
            </widget>
           </item>
-          <item row="14" column="1">
-           <widget class="QComboBox" name="comboBox_ebp">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="18" column="0">
-           <widget class="QLabel" name="label">
-            <property name="text">
-             <string>Controles cable</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1">
+          <item row="4" column="2">
            <widget class="QComboBox" name="comboBox_baie">
             <property name="enabled">
              <bool>false</bool>
             </property>
            </widget>
           </item>
-          <item row="8" column="0">
+          <item row="3" column="1">
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Controles adresse</string>
+            </property>
+           </widget>
+          </item>
+          <item row="14" column="2">
+           <widget class="QComboBox" name="comboBox_ebp">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="1">
            <widget class="QLabel" name="label_17">
             <property name="text">
              <string>Controles cheminement</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
+          <item row="18" column="1">
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Controles cable</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
            <widget class="QLabel" name="label_13">
             <property name="text">
              <string>Controles adductabilite</string>
             </property>
            </widget>
           </item>
-          <item row="7" column="0">
+          <item row="7" column="1">
            <widget class="QLabel" name="label_16">
             <property name="text">
              <string>Controles ptech</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="1">
+          <item row="20" column="2">
+           <widget class="QComboBox" name="comboBox_love">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
            <widget class="QComboBox" name="comboBox_adductabilite">
             <property name="enabled">
              <bool>false</bool>
@@ -141,134 +249,156 @@
             </property>
            </widget>
           </item>
-          <item row="7" column="1">
+          <item row="7" column="2">
            <widget class="QComboBox" name="comboBox_ptech">
             <property name="enabled">
              <bool>false</bool>
             </property>
            </widget>
           </item>
-          <item row="4" column="0">
+          <item row="4" column="1">
            <widget class="QLabel" name="label_14">
             <property name="text">
              <string>Controles baie</string>
             </property>
            </widget>
           </item>
-          <item row="20" column="1">
-           <widget class="QComboBox" name="comboBox_love">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="1">
-           <widget class="QComboBox" name="comboBox_cheminement">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="16" column="0">
-           <widget class="QLabel" name="label_15">
-            <property name="text">
-             <string>Controles zpbo</string>
-            </property>
-           </widget>
-          </item>
-          <item row="22" column="1">
-           <widget class="QComboBox" name="comboBox_zdep">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="16" column="1">
+          <item row="16" column="2">
            <widget class="QComboBox" name="comboBox_zpbo">
             <property name="enabled">
              <bool>false</bool>
             </property>
            </widget>
           </item>
-          <item row="20" column="0">
-           <widget class="QLabel" name="label_18">
-            <property name="text">
-             <string>Controles love</string>
-            </property>
-           </widget>
-          </item>
-          <item row="12" column="0">
-           <widget class="QLabel" name="label_19">
-            <property name="text">
-             <string>Controles sitetech</string>
-            </property>
-           </widget>
-          </item>
-          <item row="12" column="1">
-           <widget class="QComboBox" name="comboBox_sitetech">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="22" column="0">
-           <widget class="QLabel" name="label_20">
-            <property name="text">
-             <string>Controles zdep</string>
-            </property>
-           </widget>
-          </item>
-          <item row="27" column="1">
-           <widget class="QComboBox" name="comboBox_cab_cond">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
           <item row="25" column="1">
-           <widget class="QComboBox" name="comboBox_cond_chem">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="25" column="0">
            <widget class="QLabel" name="label_23">
             <property name="text">
              <string>Controles cond_chem</string>
             </property>
            </widget>
           </item>
-          <item row="27" column="0">
-           <widget class="QLabel" name="label_21">
+          <item row="16" column="1">
+           <widget class="QLabel" name="label_15">
             <property name="text">
-             <string>Controles cab_cond</string>
+             <string>Controles zpbo</string>
             </property>
            </widget>
           </item>
-          <item row="23" column="0">
+          <item row="22" column="2">
+           <widget class="QComboBox" name="comboBox_zdep">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="20" column="1">
+           <widget class="QLabel" name="label_18">
+            <property name="text">
+             <string>Controles love</string>
+            </property>
+           </widget>
+          </item>
+          <item row="22" column="1">
+           <widget class="QLabel" name="label_20">
+            <property name="text">
+             <string>Controles zdep</string>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="2">
+           <widget class="QComboBox" name="comboBox_cheminement">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="12" column="2">
+           <widget class="QComboBox" name="comboBox_sitetech">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="27" column="2">
+           <widget class="QComboBox" name="comboBox_cab_cond">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="12" column="1">
+           <widget class="QLabel" name="label_19">
+            <property name="text">
+             <string>Controles sitetech</string>
+            </property>
+           </widget>
+          </item>
+          <item row="25" column="2">
+           <widget class="QComboBox" name="comboBox_cond_chem">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="23" column="1">
            <widget class="QLabel" name="label_22">
             <property name="text">
              <string>Controles suf</string>
             </property>
            </widget>
           </item>
-          <item row="23" column="1">
+          <item row="23" column="2">
            <widget class="QComboBox" name="comboBox_suf">
             <property name="enabled">
              <bool>false</bool>
             </property>
            </widget>
           </item>
+          <item row="27" column="1">
+           <widget class="QLabel" name="label_21">
+            <property name="text">
+             <string>Controles cab_cond</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0" alignment="Qt::AlignHCenter">
+           <widget class="QCheckBox" name="checkBox_noeud">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="16" column="0" alignment="Qt::AlignHCenter">
+           <widget class="QCheckBox" name="checkBox_zpbo">
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
          </layout>
         </item>
-        <item row="1" column="0">
+        <item row="5" column="0">
          <widget class="QFrame" name="frame">
           <property name="frameShape">
            <enum>QFrame::StyledPanel</enum>
           </property>
           <property name="frameShadow">
            <enum>QFrame::Raised</enum>
+          </property>
+          <zorder></zorder>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QPushButton" name="pushButton_select">
+          <property name="text">
+           <string>Sélectionner tout</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QPushButton" name="pushButton_deselect">
+          <property name="text">
+           <string>Désélectionner tout</string>
           </property>
          </widget>
         </item>
@@ -494,7 +624,7 @@
       </font>
      </property>
      <property name="text">
-      <string>Mettre à jour toutes les vues</string>
+      <string>Mettre à jour les vues sélectionnées</string>
      </property>
     </widget>
    </item>

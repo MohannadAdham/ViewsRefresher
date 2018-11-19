@@ -102,6 +102,13 @@ class ViewsRefresher:
         Button_mettre_a_jour_cable = self.dlg.findChild(QPushButton, "pushButton_mettre_a_jour_cable")
         QObject.connect(Button_mettre_a_jour_cable, SIGNAL("clicked()"), self.refresh_views)
 
+        # Connect the button "pushButton_select"
+        Button_select_all = self.dlg.findChild(QPushButton, "pushButton_select")
+        QObject.connect(Button_select_all, SIGNAL("clicked()"), self.select_all)
+
+        # Connect the button "pushButton_deselect"
+        Button_deselect_all = self.dlg.findChild(QPushButton, "pushButton_deselect")
+        QObject.connect(Button_deselect_all, SIGNAL("clicked()"), self.deselect_all)
 
 
         # # Connect the button "pushButton_orientation"
@@ -553,6 +560,22 @@ class ViewsRefresher:
     #         # self.fenetreMessage(QMessageBox, "Success", "Layer %s already exists but it has been updated" % vlayer.name())
     #         pass
 
+    def select_all(self):
+        try:
+            for box in self.dlg.findChildren(QCheckBox):
+                box.setChecked(True)
+
+        except Exception as e:
+            self.fenetreMessage(QMessageBox.Warning, "Error", str(e))
+
+
+    def deselect_all(self):
+        try:
+            for box in self.dlg.findChildren(QCheckBox):
+                box.setChecked(False)
+
+        except Exception as e:
+            self.fenetreMessage(QMessageBox.Warning, "Error", str(e))
 
 
     def refresh_views(self):
@@ -574,6 +597,7 @@ class ViewsRefresher:
         cond_chem = self.dlg.comboBox_cond_chem.currentText()
         cab_cond = self.dlg.comboBox_cab_cond.currentText()
 
+        # self.fenetreMessage(QMessageBox, 'Info', 'within refresh views')
         # --------------------------- Refresh the Views -------------------------------------------------
         # create a dictionary of the views and the corresponding subgroups
         views_groups = {adductabilite : "Reference", noeud : "Reference", suf : "Reference", adresse : "Reference", sitetech : "Hebergement", baie : "Hebergement", ptech : "Infrastructure d'acceuil",
@@ -583,7 +607,13 @@ class ViewsRefresher:
         # create the query string
         query = ""
         for view in views_groups.keys():
-            query += "REFRESH MATERIALIZED VIEW " + view + "; \n"  
+            # self.fenetreMessage(QMessageBox, 'Info', view.split("es_")[1])
+            try:
+                if self.dlg.findChild(QCheckBox, "checkBox_" + view.split("es_")[1]).isChecked():
+                    query += "REFRESH MATERIALIZED VIEW " + view + "; \n" 
+                    # self.fenetreMessage(QMessageBox, 'Info', 'The view is added')
+            except Exception as e:
+                self.fenetreMessage(QMessageBox.Warning, "Error", str(e))
 
         # execute the query
         self.executerRequette(query, False)
@@ -631,16 +661,22 @@ class ViewsRefresher:
         # -------------------- second case : the subgroups already exist --------------------------------
         # In the second case we need only to refresh the style of the layers within the subgroups.
 
-
+        # self.fenetreMessage(QMessageBox, "info", "before the loop")
         # -------------------------------- End of the second case ---------------------------------------
         # style the new layers in the subgroups
         # Add the style to only spatial layers ----------------
-        for view in views_groups.keys():
-            if view not in (baie, lovesuf, cond_chem, cab_cond):
-                # self.fenetreMessage(QMessageBox.Warning, "info", "before add_pg_layer " + "prod." + view.split(".")[1])
-                layer = QgsMapLayerRegistry.instance().mapLayersByName(view.split(".")[1])[0]
-                self.add_style(layer)
+        try:
+            for view in views_groups.keys():
+                # self.fenetreMessage(QMessageBox, "info", "within the loop")
+                if view not in (baie, love, suf, cond_chem, cab_cond) and self.dlg.findChild(QCheckBox, "checkBox_" + view.split("es_")[1]).isChecked():
+                    # self.fenetreMessage(QMessageBox.Warning, "info", "before add_pg_layer " + "prod." + view.split(".")[1])
+                    layer = QgsMapLayerRegistry.instance().mapLayersByName(view.split(".")[1])[0]
+                    # self.fenetreMessage(QMessageBox, "info", "Add style to " + view.split(".")[1])
+                    self.add_style(layer)
+        except Exception as e:
+            self.fenetreMessage(QMessageBox.Warning, "error", str(e))
 
+        self.fenetreMessage(QMessageBox, "info", "The selected views are updated!")
 
 
 
