@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>490</width>
-    <height>696</height>
+    <height>754</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -385,7 +385,6 @@
           <property name="frameShadow">
            <enum>QFrame::Raised</enum>
           </property>
-          <zorder></zorder>
          </widget>
         </item>
         <item row="0" column="0">
@@ -571,16 +570,6 @@
      </item>
     </layout>
    </item>
-   <item row="2" column="0">
-    <widget class="QDialogButtonBox" name="button_box">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
-    </widget>
-   </item>
    <item row="1" column="0">
     <widget class="QPushButton" name="pushButton_mettre_a_jour_cable">
      <property name="enabled">
@@ -628,15 +617,25 @@
      </property>
     </widget>
    </item>
+   <item row="2" column="0">
+    <widget class="QDialogButtonBox" name="button_box">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Close</set>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <resources/>
  <connections>
   <connection>
    <sender>button_box</sender>
-   <signal>accepted()</signal>
+   <signal>rejected()</signal>
    <receiver>ViewsRefresherDialog</receiver>
-   <slot>accept()</slot>
+   <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>20</x>
@@ -650,9 +649,9 @@
   </connection>
   <connection>
    <sender>button_box</sender>
-   <signal>rejected()</signal>
+   <signal>accepted()</signal>
    <receiver>ViewsRefresherDialog</receiver>
-   <slot>reject()</slot>
+   <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>20</x>
